@@ -1,4 +1,4 @@
-[![Braydon's GitHub Banner](./public/GitHubHeader.jpg)](https://micaljohn60.vercel.app/)
+[![THIHANHEIN INTRO BANNER](./public/GitHubHeader.jpg)](https://micaljohn60.vercel.app/)
 
 [![LinkedIn Badge](https://img.shields.io/badge/LinkedIn-Profile-informational?style=flat&logo=linkedin&logoColor=white&color=0D76A8)](https://www.linkedin.com/in/thihan-hein-77b85218a/)
 
