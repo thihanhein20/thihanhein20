@@ -1,42 +1,97 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ModelViewer from "./ModelViewer";
+
+const roles = ["Full Stack Software Engineer", "Backend Engineer", "Mobile App Developer", "Creative Coder"];
+
+const TypingText: React.FC = () => {
+  const [displayed, setDisplayed] = useState("");
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const current = roles[roleIndex];
+
+    const timeout = setTimeout(() => {
+      if (!deleting) {
+        setDisplayed(current.slice(0, charIndex + 1));
+        setCharIndex((c) => c + 1);
+        if (charIndex + 1 === current.length) {
+          setTimeout(() => setDeleting(true), 1500);
+        }
+      } else {
+        setDisplayed(current.slice(0, charIndex - 1));
+        setCharIndex((c) => c - 1);
+        if (charIndex - 1 === 0) {
+          setDeleting(false);
+          setRoleIndex((r) => (r + 1) % roles.length);
+        }
+      }
+    }, deleting ? 40 : 80);
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, deleting, roleIndex]);
+
+  return (
+    <span className="inline-flex items-center gap-1">
+      <span className="text-cyan-300">{displayed}</span>
+      <span className="inline-block w-0.5 h-6 bg-cyan-300 animate-pulse rounded-full" />
+    </span>
+  );
+};
 
 const Hero: React.FC = () => {
   return (
-    <section className="w-full">
-      <div className="relative w-full h-[420px] sm:h-[480px] md:h-[540px] lg:h-[540px] overflow-hidden bg-white">
-        {/* 3D Model */}
-        <div className="absolute inset-0 pointer-events-auto">
-          <ModelViewer modelPath="/models/my_room_2.glb" />
-        </div>
+    <>
+      {/* Load Nunito from Google Fonts */}
+      <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap"
+        rel="stylesheet"
+      />
 
-        {/* Gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent pointer-events-none" />
+      <section className="w-full" style={{ fontFamily: "'Nunito', sans-serif" }}>
+        <div className="relative w-full h-[420px] sm:h-[480px] md:h-[540px] lg:h-[540px] overflow-hidden">
+          {/* 3D Model */}
+          <div className="absolute inset-0 pointer-events-auto">
+            <ModelViewer modelPath="/models/my_room_2.glb" />
+          </div>
 
-        {/* Text Overlay */}
-        <div className="absolute inset-0 flex items-center sm:items-center pointer-events-none">
-          <div className="w-full px-5 sm:px-8 lg:px-16">
-            <div className="max-w-md sm:max-w-lg mx-auto sm:mx-0">
+          {/* Gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-900/60 via-slate-800/20 to-transparent pointer-events-none" />
+
+          {/* Text Overlay */}
+          <div className="absolute inset-0 flex items-center pointer-events-none">
+            <div className="px-8 sm:px-12 lg:px-16">
+
+              {/* Hello label */}
+              <p className="text-white/80 text-lg sm:text-xl font-700 mb-1 tracking-wide">
+                Hello! I'm
+              </p>
+
+              {/* Name */}
               <h1
-                className="
-          text-white font-bold drop-shadow-lg leading-tight
-          text-center sm:text-center
-          translate-x-0 sm:translate-x-8 md:translate-x-12
-        "
+                className="text-white font-900 leading-none drop-shadow-lg"
+                style={{
+                  fontSize: "clamp(2.8rem, 6vw, 5rem)",
+                  fontWeight: 900,
+                  letterSpacing: "-0.5px",
+                }}
               >
-                <span className="block text-5xl sm:text-2xl md:text-3xl">
-                  Hello! I’m
-                </span>
-
-                <span className="block text-6xl sm:text-4xl md:text-5xl lg:text-6xl mt-10">
-                  Thi Han Hein
-                </span>
+                Thi Han Hein
               </h1>
+
+              {/* Typing subtitle */}
+              <p
+                className="mt-3 text-xl sm:text-2xl font-700"
+                style={{ fontWeight: 700, minHeight: "2rem" }}
+              >
+                <TypingText />
+              </p>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 };
 

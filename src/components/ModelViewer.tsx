@@ -1,6 +1,6 @@
 import React, { Suspense, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls, useGLTF, Environment } from "@react-three/drei";
 import * as THREE from "three";
 
 /* =========================
@@ -23,16 +23,14 @@ const Model: React.FC<{ modelPath: string }> = ({ modelPath }) => {
    Lights
 ========================= */
 
-// KEY LIGHT (main shadow)
 const KeyLight = () => {
   const ref = useRef<THREE.DirectionalLight>(null);
-  // useHelper(ref, DirectionalLightHelper, 2, "yellow");
 
   return (
     <directionalLight
       ref={ref}
       position={[6, 12, 6]}
-      intensity={1}
+      intensity={0.4}
       castShadow
       shadow-mapSize-width={4048}
       shadow-mapSize-height={4048}
@@ -47,40 +45,34 @@ const KeyLight = () => {
   );
 };
 
-// FILL LIGHT (removes dark side)
 const FillLight = () => {
   const ref = useRef<THREE.DirectionalLight>(null);
-  // useHelper(ref, DirectionalLightHelper, 2, "cyan");
 
   return (
     <directionalLight
       ref={ref}
       position={[-6, 8, 6]}
-      intensity={1}
+      intensity={0.5}
       castShadow={false}
     />
   );
 };
 
-// RIM LIGHT (edge highlight)
 const RimLight = () => {
   const ref = useRef<THREE.DirectionalLight>(null);
-  // useHelper(ref, DirectionalLightHelper, 2, "magenta");
 
   return (
     <directionalLight
       ref={ref}
       position={[0, 6, -8]}
-      intensity={1}
+      intensity={0.4}
       castShadow={false}
     />
   );
 };
 
-// ACCENT POINT LIGHT (soft highlight)
 const AccentPointLight = () => {
   const ref = useRef<THREE.PointLight>(null);
-  // useHelper(ref, PointLightHelper, 0.5, "white");
 
   return (
     <pointLight
@@ -101,17 +93,25 @@ const ModelViewer: React.FC<{ modelPath: string }> = ({ modelPath }) => {
   return (
     <Canvas
       shadows="soft"
-      style={{ backgroundColor: "#8ec5ff", height: 540 }}
+      style={{  background: "linear-gradient(to right, #1e3a5f, #4a90c4, #8ec5ff)", }}
       camera={{ position: [2, 2, 6], fov: 45 }}
+      gl={{
+        toneMapping: THREE.ACESFilmicToneMapping,
+        toneMappingExposure: 0.9,
+        outputColorSpace: THREE.SRGBColorSpace,
+      }}
     >
       {/* Base light */}
-      <ambientLight intensity={0.9} />
+      <ambientLight intensity={0} />
 
       {/* Lighting setup */}
       <KeyLight />
       <FillLight />
       <RimLight />
       <AccentPointLight />
+
+      {/* Environment — low intensity so it adds subtle bounce without washing out colors */}
+      <Environment preset="apartment" environmentIntensity={0.3} />
 
       {/* Model */}
       <Suspense fallback={null}>
@@ -124,10 +124,8 @@ const ModelViewer: React.FC<{ modelPath: string }> = ({ modelPath }) => {
         enablePan={false}
         enableDamping
         dampingFactor={0.05}
-        /* Horizontal rotation limits (left ↔ right) */
-        minAzimuthAngle={-Math.PI / 6} // -30°
-        maxAzimuthAngle={Math.PI / 6} // +30°
-        /* Vertical rotation limits (up ↕ down) */
+        minAzimuthAngle={-Math.PI / 6}
+        maxAzimuthAngle={Math.PI / 6}
         minPolarAngle={Math.PI / 2.2}
         maxPolarAngle={Math.PI / 1.8}
         target={[0, 1, 0]}

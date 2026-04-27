@@ -18,15 +18,19 @@ const App: React.FC = () => {
 
             <ExperienceCard
               title="FullStack Engineer"
-              company="Neptune Myanmar"
+              company="Neptune Technology"
               period="April 2021 – May 2023"
               skills={[
                 "React",
                 "Node.js",
+                "Java",
+                "Hibernate",
+                "Springboot",
+                "JPA",
                 "MongoDB",
                 "REST API",
                 "MYSQL",
-                "Flutter",
+                "React Native",
                 "Tailwind CSS",
               ]}
             />
