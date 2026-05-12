@@ -73,9 +73,9 @@ I'm a Full Stack Developer with **2+ years** building production web and mobile 
 
 <div align="center">
 
-![GitHub Stats](https://github-readme-stats.shion.dev/api?username=micaljohn60&theme=dark&hide_border=false&include_all_commits=false&count_private=false)
+![GitHub Stats](https://github-readme-stats.shion.dev/api?username=thihanhein20&theme=dark&hide_border=false&include_all_commits=false&count_private=false)
 
-![GitHub Streak](https://streak-stats.demolab.com/?user=micaljohn60&theme=dark&hide_border=false)
+![GitHub Streak](https://streak-stats.demolab.com/?user=thihanhein20&theme=dark&hide_border=false)
 
 </div>
 
